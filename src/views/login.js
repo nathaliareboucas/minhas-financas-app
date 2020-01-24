@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 
 import Card from '../components/card'
 import FormGroup from '../components/form-group'
@@ -13,6 +14,10 @@ class Login extends React.Component {
 	entrar = () => {
 		console.log('Email: ', this.state.email)
 		console.log('Senha: ', this.state.senha)
+	}
+
+	prepararCadastrar = () => {
+		this.props.history.push('/cadastro-usuario')
 	}
 
 	render() {
@@ -41,8 +46,8 @@ class Login extends React.Component {
 											</FormGroup>
 										</fieldset>
 
-										<button onClick={this.entrar} className="btn btn-success margin-right">Entrar</button>
-										<button className="btn btn-danger">Cancelar</button>
+										<button onClick={this.entrar} className="btn btn-primary margin-right">Entrar</button>
+										<button onClick={this.prepararCadastrar} className="btn btn-secondary">Cadastrar</button>
 
 									</div>
 								</div>
@@ -57,4 +62,4 @@ class Login extends React.Component {
 
 }
 
-export default Login
+export default withRouter(Login)
