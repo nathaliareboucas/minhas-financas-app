@@ -14,8 +14,8 @@ class ApiService {
         return httpCliente.post(`${this.apiUrl}/${url}`, objeto)
     }
 
-    put(url, objeto) {
-        return httpCliente.put(`${this.apiUrl}/${url}`, objeto)
+    put(url, idObjeto, objeto) {
+        return httpCliente.put(`${this.apiUrl}/${url}/${idObjeto}`, objeto)
     }
 
     delete(url) {
@@ -24,6 +24,10 @@ class ApiService {
 
     get(url) {
         return httpCliente.get(`${this.apiUrl}/${url}`)
+    }
+
+    getById(url, id) {
+        return httpCliente.get(`${this.apiUrl}/${id}/${url}`)
     }
 }
 

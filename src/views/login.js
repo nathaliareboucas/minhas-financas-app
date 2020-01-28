@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom'
 import UsuarioService from '../services/usuario-service'
 import Card from '../components/card'
 import FormGroup from '../components/form-group'
+import LocalStorageService from '../services/localStorage-service'
 
 class Login extends React.Component {
 
@@ -14,14 +15,14 @@ class Login extends React.Component {
 	}
 
 	constructor() {
-		super();
-		this.service = new UsuarioService()
+		super()
+		this.usuarioService = new UsuarioService()
 	}
 
 	entrar = () => {
-		this.service.autenticar({ email: this.state.email, senha: this.state.senha })
+		this.usuarioService.autenticar({ email: this.state.email, senha: this.state.senha })
 			.then(response => {
-				localStorage.setItem('usuario-logado', JSON.stringify(response.data))
+				LocalStorageService.adicionarItem('usuario-logado', response.data)
 				this.props.history.push('/home')
 			})
 			.catch(error => this.setState({mensagemErro: error.response.data.msg}))
