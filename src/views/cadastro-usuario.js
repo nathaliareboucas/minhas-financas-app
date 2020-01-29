@@ -3,6 +3,8 @@ import { withRouter } from 'react-router-dom'
 
 import Card from '../components/card'
 import FormGroup from '../components/form-group'
+import UsuarioService from '../services/usuario-service'
+import { mensagemErro, mensagemSucesso } from '../components/toast'
 
 class CadastroUsuario extends React.Component {
 
@@ -13,8 +15,23 @@ class CadastroUsuario extends React.Component {
 		senhaRepeticao: ''
 	}
 
+	constructor() {
+		super()
+		this.usuarioService = new UsuarioService()
+	}
+
 	cadastrar = () => {
-		console.log(this.state)
+		const usuario = {
+			nome: this.state.nome,
+			email: this.state.email,
+			senha: this.state.senha
+		}
+		this.usuarioService.salvar(usuario)
+			.then(response => {
+				mensagemSucesso('Usuário salvo com sucesso, faça login para acessar o sistema.')
+				this.props.history.push('/login')
+			})
+			.catch(error => mensagemErro(error.response.data.msg))
 	}
 
 	cancelar = () => {

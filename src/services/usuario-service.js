@@ -22,6 +22,10 @@ class UsuarioService extends ApiService {
     usuarioLogado() {        
         return this.getUsuarioLogado() !== null
     }
+
+    salvar(usuario) {
+        return this.post('', usuario)
+    }
 }
 
 export default UsuarioService
