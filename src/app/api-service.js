@@ -29,6 +29,10 @@ class ApiService {
     getById(url, id) {
         return httpCliente.get(`${this.apiUrl}/${id}/${url}`)
     }
+
+    getByFilter(url, filter) {
+        return httpCliente.get(`${this.apiUrl}/${url}/`, { params: {...filter} })
+    }
 }
 
 export default ApiService
