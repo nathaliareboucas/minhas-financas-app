@@ -4,7 +4,7 @@ import { Route, Switch, HashRouter } from 'react-router-dom'
 import Login from '../views/login'
 import Home from '../views/home'
 import CadastroUsuario from '../views/cadastro-usuario'
-import ConsultaLancamentos from '../views/consulta-lancamentos'
+import ConsultaLancamentos from '../views/lancamento/consulta-lancamentos'
 
 function Rotas() {
 	return (
