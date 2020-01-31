@@ -7,7 +7,7 @@ import SelectMenu from '../../components/SelectMenu'
 import LancamentosTable from './LancamentosTable'
 import LancamentoService from '../../services/lancamento-service'
 import UsuarioService from '../../services/usuario-service'
-import { mensagemErro } from '../../components/toast'
+import { mensagemErro, mensagemSucesso } from '../../components/toast'
 
 export class ConsultaLancamentos extends React.Component {
 
@@ -59,7 +59,9 @@ export class ConsultaLancamentos extends React.Component {
     }
 
     deletar = (lancamentoId) => {
-        console.log(lancamentoId)
+        this.lancamentoService.delete(lancamentoId)
+            .then(() => mensagemSucesso('Lançamento excluído com sucesso.'))
+            .catch(error => mensagemErro(error.response.data.msg))
     }
 
     render() {
