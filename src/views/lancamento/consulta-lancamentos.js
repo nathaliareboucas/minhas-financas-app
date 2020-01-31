@@ -38,6 +38,7 @@ export class ConsultaLancamentos extends React.Component {
         }
         return true
     }
+
     consultar = () => {
         if (this.valido()) {        
             const lancamentoFiltro = {
@@ -51,6 +52,14 @@ export class ConsultaLancamentos extends React.Component {
                 .then(response => this.setState({lancamentos: response.data}))
                 .catch(error => mensagemErro(error.response.data.msg))
         }
+    }
+
+    editar = (lancamentoId) => {
+        console.log(lancamentoId)
+    }
+
+    deletar = (lancamentoId) => {
+        console.log(lancamentoId)
     }
 
     render() {
@@ -100,7 +109,8 @@ export class ConsultaLancamentos extends React.Component {
                 <div className="row">
                     <div className="col-md-12">
                         <div className="bs-component">
-                            <LancamentosTable lancamentos={this.state.lancamentos}></LancamentosTable>
+                            <LancamentosTable lancamentos={this.state.lancamentos}
+                                editar={this.editar} deletar={this.deletar}></LancamentosTable>
                         </div>
                     </div>
                 </div>

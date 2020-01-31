@@ -12,7 +12,12 @@ export default (props) => {
                 <td>{lancamento.tipo}</td>
                 <td>{lancamento.mes}</td>
                 <td>{lancamento.status}</td>
-                <td></td>
+                <td>
+                    <button type="button" className="btn btn-primary margin-right"
+                        onClick={e => props.editar(lancamento.id)}>Editar</button>
+                    <button type="button" className="btn btn-secondary"
+                        onClick={e => props.deletar(lancamento.id)}>Excluir</button>
+                </td>
             </tr>
         )
     })
