@@ -1,6 +1,8 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 
+import {Dialog} from 'primereact/dialog';
+
 import Card from '../../components/card'
 import FormGroup from '../../components/form-group'
 import SelectMenu from '../../components/SelectMenu'
@@ -16,7 +18,9 @@ export class ConsultaLancamentos extends React.Component {
         mes: '',
         tipo: '',
         descricao: '',
-        lancamentos: []
+        lancamentos: [],
+        showConfirmDialog: false,
+        lancamentoExcluidoId: {}
     }
 
     constructor() {
@@ -58,15 +62,36 @@ export class ConsultaLancamentos extends React.Component {
         console.log(lancamentoId)
     }
 
-    deletar = (lancamentoId) => {
-        this.lancamentoService.delete(lancamentoId)
-            .then(() => mensagemSucesso('Lançamento excluído com sucesso.'))
-            .catch(error => mensagemErro(error.response.data.msg))
+    confirmarExclusao = (lancamentoId) => {
+        this.setState({showConfirmDialog: true, lancamentoExcluidoId: lancamentoId})
     }
+
+    limparExclusao = () => {
+        this.setState({showConfirmDialog: false, lancamentoExcluidoId: {} })
+    }
+
+    deletar = () => {
+        this.lancamentoService.delete(this.state.lancamentoExcluidoId)
+            .then(() => {
+                mensagemSucesso('Lançamento excluído com sucesso.')
+                this.limparExclusao()
+                this.consultar()
+            })
+            .catch(error => mensagemErro(error.response.data.msg))
+    }   
 
     render() {
         const meses = this.lancamentoService.getMeses()
         const tipos = this.lancamentoService.getTiposLancamento()
+
+        const btnsConfirmDialog = (
+            <div>
+                <button type="button" className="btn btn-primary margin-right"
+                    onClick={this.deletar}>Sim</button>
+                <button type="button" className="btn btn-secondary"
+                    onClick={this.limparExclusao}>Não</button>
+            </div>
+        )
 
         return (
             <Card title="Consulta Lançamentos">
@@ -112,9 +137,17 @@ export class ConsultaLancamentos extends React.Component {
                     <div className="col-md-12">
                         <div className="bs-component">
                             <LancamentosTable lancamentos={this.state.lancamentos}
-                                editar={this.editar} deletar={this.deletar}></LancamentosTable>
+                                editar={this.editar} deletar={this.confirmarExclusao}></LancamentosTable>
                         </div>
                     </div>
+                </div>
+
+                <div>
+                    <Dialog header="Excluir lançamento" visible={this.state.showConfirmDialog} 
+                        style={{width: '50vw'}} modal={true} footer={btnsConfirmDialog}
+                        onHide={this.limparExclusao}>
+                        Confirma a exclusão do lançamento?
+                    </Dialog>
                 </div>
             </Card>
         )
