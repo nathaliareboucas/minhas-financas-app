@@ -5,6 +5,8 @@ import Card from '../../components/card'
 import FormGroup from '../../components/form-group'
 import SelectMenu from '../../components/SelectMenu'
 import LancamentoService from '../../services/lancamento-service'
+import usuarioService from '../../services/usuario-service'
+import { mensagemSucesso, mensagemErro } from '../../components/toast'
 
 class CadastroLancamento extends React.Component {
 
@@ -21,17 +23,40 @@ class CadastroLancamento extends React.Component {
     constructor() {
         super()
         this.lancamentoService = new LancamentoService()
+        this.usuarioService = new usuarioService()
     }
 
     handleChange = (event) => {
         const value = event.target.value
         const name = event.target.name
         this.setState({ [name] : value })
+    }
 
+    limpaLancamento = () => {
+        this.setState({
+            id: null,
+            descricao: '',
+            mes: '',
+            ano: '',
+            valor: '',
+            tipo: '',
+            status: ''
+        })
     }
 
     salvar = () => {
-        console.log('salvando', this.state)
+        if (this.usuarioService.usuarioLogado()) {            
+            const usuarioLogado = this.usuarioService.getUsuarioLogado()
+            const { id, descricao, mes, ano, valor, tipo } = this.state
+            const lancamento = { id, descricao, mes, ano, valor, tipo, usuarioId: usuarioLogado.id }
+
+            this.lancamentoService.salvar(lancamento)
+                .then(response => {
+                    this.limpaLancamento()
+                    mensagemSucesso('Lançamento salvo com sucesso.')
+                })
+                .catch(error => mensagemErro(error.response.data.msg))
+        }        
     }
 
     cancelar = () => {

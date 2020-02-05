@@ -36,6 +36,10 @@ class LancamentoService extends ApiService {
         return this.getByFilter('', lancamentoFiltro)
     }
 
+    salvar(lancamento) {
+        return this.post('', lancamento)
+    }
+
 }
 
 export default LancamentoService
