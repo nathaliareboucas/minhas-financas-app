@@ -126,7 +126,8 @@ export class ConsultaLancamentos extends React.Component {
 
                             <button type="button" className="btn btn-primary margin-right"
                                 onClick={this.consultar}>Consultar</button>
-                            <button type="button" className="btn btn-secondary">Cancelar</button>
+                            <button type="button" className="btn btn-secondary"
+                                onClick={e => this.props.history.push('/cadastro-lancamento')}>Cadastrar</button>
                         </div>
                     </div>
                 </div>

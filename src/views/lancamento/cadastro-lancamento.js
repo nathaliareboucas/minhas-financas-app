@@ -51,16 +51,12 @@ class CadastroLancamento extends React.Component {
             const lancamento = { id, descricao, mes, ano, valor, tipo, usuarioId: usuarioLogado.id }
 
             this.lancamentoService.salvar(lancamento)
-                .then(response => {
+                .then(() => {
                     this.limpaLancamento()
                     mensagemSucesso('Lançamento salvo com sucesso.')
                 })
                 .catch(error => mensagemErro(error.response.data.msg))
         }        
-    }
-
-    cancelar = () => {
-        console.log('cancelando')
     }
 
     render() {
@@ -125,7 +121,7 @@ class CadastroLancamento extends React.Component {
                 <button type="button" className="btn btn-primary margin-right"
                     onClick={this.salvar}>Salvar</button>
                 <button type="button" className="btn btn-secondary"
-                    onClick={this.cancelar}>Cancelar</button>
+                    onClick={e => this.props.history.push('/consulta-lancamentos')}>Cancelar</button>
             </Card>
         )
     }
