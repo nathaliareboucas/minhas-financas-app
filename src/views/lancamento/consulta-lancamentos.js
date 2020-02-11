@@ -59,7 +59,7 @@ export class ConsultaLancamentos extends React.Component {
     }
 
     editar = (lancamentoId) => {
-        console.log(lancamentoId)
+        this.props.history.push(`/cadastro-lancamento/${lancamentoId}`)
     }
 
     confirmarExclusao = (lancamentoId) => {

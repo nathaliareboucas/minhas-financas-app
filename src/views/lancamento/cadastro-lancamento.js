@@ -17,13 +17,25 @@ class CadastroLancamento extends React.Component {
         ano: '',
         valor: '',        
         tipo: '',
-        status: ''
+        status: '',
+        usuarioId: null,
+        dataCadastro: null,
+        atualizando: false
     }
 
     constructor() {
         super()
         this.lancamentoService = new LancamentoService()
         this.usuarioService = new usuarioService()
+    }
+
+    componentDidMount() {
+        const params = this.props.match.params
+        if (params.id) {
+            this.lancamentoService.lancamentoPorId(params.id)
+                .then(response => this.setState({...response.data, atualizando: true}))
+                .catch(error => mensagemErro(error.response.data.msg))
+        } 
     }
 
     handleChange = (event) => {
@@ -47,16 +59,30 @@ class CadastroLancamento extends React.Component {
     salvar = () => {
         if (this.usuarioService.usuarioLogado()) {            
             const usuarioLogado = this.usuarioService.getUsuarioLogado()
-            const { id, descricao, mes, ano, valor, tipo } = this.state
-            const lancamento = { id, descricao, mes, ano, valor, tipo, usuarioId: usuarioLogado.id }
+            const { id, descricao, mes, ano, valor, tipo, status, dataCadastro } = this.state
+            const lancamento = { id, descricao, mes, ano, valor, tipo, 
+                status, usuarioId: usuarioLogado.id, dataCadastro }
 
-            this.lancamentoService.salvar(lancamento)
-                .then(() => {
-                    this.limpaLancamento()
-                    mensagemSucesso('Lançamento salvo com sucesso.')
-                })
-                .catch(error => mensagemErro(error.response.data.msg))
+            this.state.atualizando ? this.atualizar(lancamento) : this.cadastrar(lancamento)            
         }        
+    }
+
+    cadastrar(lancamento) {
+        this.lancamentoService.cadastrar(lancamento)
+            .then(() => {
+                this.limpaLancamento()
+                mensagemSucesso('Lançamento salvo com sucesso.')
+            })
+            .catch(error => mensagemErro(error.response.data.msg))
+    }
+
+    atualizar(lancamento) {
+        this.lancamentoService.atualizar(lancamento)
+        .then(() => {
+            mensagemSucesso('Lançamento salvo com sucesso.')
+            this.props.history.push('/consulta-lancamentos')
+        })
+        .catch(error => mensagemErro(error.response.data.msg))
     }
 
     render() {
@@ -64,7 +90,7 @@ class CadastroLancamento extends React.Component {
         const meses = this.lancamentoService.getMeses()
 
         return (
-            <Card title="Cadastro de lançamento">
+            <Card title={ this.state.atualizando ? 'Atualização de lançamento' : 'Cadastro de lançamento'}>
                 <div className="row">
                     <div className="col-md-12">
                         <FormGroup label="Descrição  *" htmlFor="descricao">

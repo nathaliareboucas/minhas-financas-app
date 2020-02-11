@@ -36,8 +36,16 @@ class LancamentoService extends ApiService {
         return this.getByFilter('', lancamentoFiltro)
     }
 
-    salvar(lancamento) {
+    lancamentoPorId(lancamentoId) {
+        return this.getById('', lancamentoId)
+    }
+
+    cadastrar(lancamento) {
         return this.post('', lancamento)
+    }
+
+    atualizar(lancamento) {
+        return this.put(`${lancamento.id}`, lancamento)
     }
 
 }
