@@ -57,14 +57,21 @@ class CadastroLancamento extends React.Component {
     }
 
     salvar = () => {
-        if (this.usuarioService.usuarioLogado()) {            
+        if (this.usuarioService.usuarioLogado()) {                        
             const usuarioLogado = this.usuarioService.getUsuarioLogado()
             const { id, descricao, mes, ano, valor, tipo, status, dataCadastro } = this.state
             const lancamento = { id, descricao, mes, ano, valor, tipo, 
                 status, usuarioId: usuarioLogado.id, dataCadastro }
 
-            this.state.atualizando ? this.atualizar(lancamento) : this.cadastrar(lancamento)            
-        }        
+            try {
+                this.lancamentoService.validar(lancamento)
+            } catch (erro) {
+                erro.mensagens.forEach(msg => mensagemErro(msg))
+                return false
+            }
+            
+            this.state.atualizando ? this.atualizar(lancamento) : this.cadastrar(lancamento)  
+        }           
     }
 
     cadastrar(lancamento) {
@@ -137,7 +144,7 @@ class CadastroLancamento extends React.Component {
                     </div>
 
                     <div className="col-md-3">
-                        <FormGroup label="Status lançamento  *" htmlFor="status">
+                        <FormGroup label="Status lançamento " htmlFor="status">
                             <input id="status" type="text" className="form-control" disabled 
                             name="status" value={this.state.status} />
                         </FormGroup>

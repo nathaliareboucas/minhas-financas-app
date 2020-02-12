@@ -1,5 +1,7 @@
 import ApiService from '../app/api-service';
 
+import ErroValidacao from '../app/exception/ErroValidacao'
+
 class LancamentoService extends ApiService {
 
     constructor() {
@@ -30,6 +32,29 @@ class LancamentoService extends ApiService {
             {label: 'Receita', value:'RECEITA'},
             {label: 'Despesa', value: 'DESPESA'}
         ]
+    }
+
+    validar(lancamento) {
+        const erros = []
+
+        if (!lancamento.descricao)
+            erros.push('A descrição é obrigatória.')
+
+        if (!lancamento.ano)
+            erros.push('O ano é obrigatório.')
+
+        if (!lancamento.mes)
+            erros.push('O mês é obrigatório.')
+
+        if (!lancamento.valor)
+            erros.push('O valor é obrigatório.')
+
+        if (!lancamento.tipo)
+            erros.push('O tipo é obrigatório.')
+
+        if (erros && erros.length > 0) {
+            throw new ErroValidacao(erros)
+        }
     }
 
     lancamentosPorFiltro(lancamentoFiltro) {        
