@@ -95,6 +95,7 @@ class CadastroLancamento extends React.Component {
     render() {
         const tipos = this.lancamentoService.getTiposLancamento()
         const meses = this.lancamentoService.getMeses()
+        const status = this.lancamentoService.getStatusLancamento()
 
         return (
             <Card title={ this.state.atualizando ? 'Atualização de lançamento' : 'Cadastro de lançamento'}>
@@ -144,10 +145,13 @@ class CadastroLancamento extends React.Component {
                     </div>
 
                     <div className="col-md-3">
-                        <FormGroup label="Status lançamento " htmlFor="status">
-                            <input id="status" type="text" className="form-control" disabled 
-                            name="status" value={this.state.status} />
-                        </FormGroup>
+                        {this.state.atualizando && 
+                            (<FormGroup label="Status lançamento " htmlFor="status">
+                                <SelectMenu id="status" lista={status} className="form-control"
+                                    name="status" value={this.state.status}                                
+                                    onChange={this.handleChange}/>                           
+                            </FormGroup>)
+                        }
                     </div>                    
                 </div>
 

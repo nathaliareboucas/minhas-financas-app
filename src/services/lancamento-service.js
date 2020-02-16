@@ -34,6 +34,14 @@ class LancamentoService extends ApiService {
         ]
     }
 
+    getStatusLancamento() {
+        return [
+            {label: 'Pendente', value: 'PENDENTE'},
+            {label: 'Cancelado', value: 'CANCELADO'},
+            {label: 'Efetivado', value: 'EFETIVADO'}
+        ]
+    }
+
     validar(lancamento) {
         const erros = []
 
