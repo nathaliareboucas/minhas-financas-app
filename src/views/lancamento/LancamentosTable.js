@@ -14,9 +14,9 @@ export default (props) => {
                 <td>{lancamento.status}</td>
                 <td>
                     <button type="button" className="btn btn-primary margin-right"
-                        onClick={e => props.editar(lancamento.id)}>Editar</button>
+                        onClick={e => props.editar(lancamento.id)}><i className="pi pi-pencil"></i></button>
                     <button type="button" className="btn btn-secondary"
-                        onClick={e => props.deletar(lancamento.id)}>Excluir</button>
+                        onClick={e => props.deletar(lancamento.id)}><i className="pi pi-times"></i></button>
                 </td>
             </tr>
         )
