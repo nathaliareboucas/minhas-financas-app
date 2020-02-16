@@ -9,7 +9,7 @@ import SelectMenu from '../../components/SelectMenu'
 import LancamentosTable from './LancamentosTable'
 import LancamentoService from '../../services/lancamento-service'
 import UsuarioService from '../../services/usuario-service'
-import { mensagemErro, mensagemSucesso } from '../../components/toast'
+import { mensagemErro, mensagemSucesso, mensagemInfo } from '../../components/toast'
 
 export class ConsultaLancamentos extends React.Component {
 
@@ -53,7 +53,12 @@ export class ConsultaLancamentos extends React.Component {
                 usuario: this.usuarioService.getUsuarioLogado()
             }
             this.lancamentoService.lancamentosPorFiltro(lancamentoFiltro)
-                .then(response => this.setState({lancamentos: response.data}))
+                .then(response => {
+                    if (response.data.length < 1) {
+                        mensagemInfo('Nenhum lançamento encontrado')
+                    }
+                    this.setState({lancamentos: response.data})
+                })
                 .catch(error => mensagemErro(error.response.data.msg))
         }
     }
